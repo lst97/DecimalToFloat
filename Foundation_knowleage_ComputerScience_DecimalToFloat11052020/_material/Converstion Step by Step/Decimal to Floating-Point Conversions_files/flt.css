@@ -1,0 +1,22 @@
+table.dftobf { margin-left: 10pt; }
+td.old, td.new { text-align: left; }
+td.new { padding-right: 5pt; }
+td.digit { text-align: center; padding-left: 1px; padding-right: 1px;
+    border: 1px solid black; 
+    padding-top: 0px; padding-bottom: 0px; }
+td.next { text-align: left; font-style: italic; padding-left: 20pt; }
+span.signbit, span.expon, span.mant {
+    border-top: 1px solid black; border-bottom: 1px solid black; 
+    padding-left: 4px; padding-right: 4px;
+    padding-top: 0px; padding-bottom: 0px;
+}
+span.signbit, span.mant {
+    border-left: 1px solid black; border-right: 1px solid black; 
+}
+td.etc { text-align: center; }
+table.flcon { margin-left: 10pt; }
+table.flcon td.bid { 
+    text-align: right; padding-right: 10pt; font-style: italic; }
+table.flcon td { text-align: center; }
+table.flcon td.tr, table.flcon td.ta, table.flcon td.tb, table.flcon td.anu {
+    width: 20pt; }

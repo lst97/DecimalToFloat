@@ -1,0 +1,12 @@
+div.dxtop { font-size: 70%; width: 100%; text-align: center; 
+	    position: relative; top: -5pt; 
+	    background-color: #DDDDFF; }
+div.dxtop + div.dxtop { margin-top: 2pt; }
+span.dxname { padding-left: 2pt; padding-right: 2pt; white-space: nowrap; }
+a.dxtop { font-style: italic; }
+a.dxhere { font-weight: bold; font-size: 95%; }
+a.dxtop:link { color: #000033; text-decoration: none; }
+a.dxtop:visited { color: #000033; text-decoration: none; }
+a.dxtop:active { color: #000033; text-decoration: none; }
+a.dxtop:hover { color: #333366; text-decoration: underline; }
+div.dxtop img.arrow { position: relative; top: 1px; }

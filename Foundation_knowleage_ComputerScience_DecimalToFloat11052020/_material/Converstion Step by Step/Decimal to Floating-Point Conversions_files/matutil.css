@@ -1,0 +1,29 @@
+div.dmat { margin: 2px; margin-left: 10px; }
+div.dmatover { margin: 2px; margin-left: 50px; }
+div.dmatflat { margin: 0px; }
+div.dmatflam { margin: 2px; margin-left: 20px; }
+table.mat { border-collapse: collapse; margin: 0pt; }
+table.matflam { background-color: #BBBBEE; padding: 1px; }
+table.mat td { text-align: center; vertical-align: middle;
+	margin: 0pt; }
+span.m1 { font-size: 200%; font-stretch: semi-condensed; }
+span.m2 { font-size: 300%; font-stretch: condensed; }
+span.m3 { font-size: 400%; font-stretch: extra-condensed; }
+span.m4 { font-size: 500%; font-stretch: ultra-condensed; }
+span.s1 { font-size: 85%; }
+span.s2 { font-size: 75%; }
+span.mid { float: right; vertical-align: middle; }
+table.proof { width: 100%; border-collapse: collapse; 
+	margin-top: 5px; margin-bottom: 5px; }
+table.proof td.aa { width: 50%; padding-left: 0pt; 
+	text-align: left; vertical-align: top; } 
+table.proof td.bb { width: 50%; padding-left: 30pt;
+	text-align: left; vertical-align: middle; }
+span.sup { position: relative; bottom: 5px; font-size: 78%; }
+span.sub { position: relative; bottom: -5px; font-size: 78%; }
+hr.hline { border: 0px; height: 1px; color: black; background-color: black; 
+	margin: 0pt; padding: 0pt ;}
+span.higher { position: relative; top: -4px; }
+span.lower { position: relative; bottom: -5px; }
+span.invert { text-decoration: overline; 
+	padding-left: 1pt; padding-right: 1pt; }

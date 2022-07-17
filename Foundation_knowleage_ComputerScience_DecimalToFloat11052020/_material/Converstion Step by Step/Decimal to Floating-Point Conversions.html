@@ -1,0 +1,411 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	 <link rel="stylesheet" href="Decimal%20to%20Floating-Point%20Conversions_files/twb.css" type="text/css">
+<link rel="stylesheet" href="Decimal%20to%20Floating-Point%20Conversions_files/gencon.css" type="text/css">
+<link rel="stylesheet" href="Decimal%20to%20Floating-Point%20Conversions_files/flt.css" type="text/css">
+<link rel="stylesheet" href="Decimal%20to%20Floating-Point%20Conversions_files/dxtop.css" type="text/css">
+<link rel="stylesheet" href="Decimal%20to%20Floating-Point%20Conversions_files/matutil.css" type="text/css">
+
+	 
+	 	 
+	 <title>Decimal to Floating-Point Conversions</title>
+	 
+	 	 </head>
+	 <body>
+	 <img class="tibar" src="Decimal%20to%20Floating-Point%20Conversions_files/bibart.gif" alt="------------------------------------------------------------------------------"><br>
+	 <a href="http://www.mc.edu/"><img src="Decimal%20to%20Floating-Point%20Conversions_files/msplash3.gif" class="nb right" alt="MC logo"></a>
+	 <div class="intit">Decimal to Floating-Point Conversions</div>
+	 <div class="uplnk"><a href="http://sandbox.mc.edu/~bennet/cs110/flt/index.html"><img src="Decimal%20to%20Floating-Point%20Conversions_files/up3.gif" class="nb upimg" alt="[^]"></a>
+		<a href="http://sandbox.mc.edu/~bennet/cs110/flt/index.html">Floating-Point Conversion Examples</a> &nbsp; <a href="http://sandbox.mc.edu/~bennet/cs110/index.html"><img src="Decimal%20to%20Floating-Point%20Conversions_files/up3.gif" class="nb upimg" style="width: 10px; height: 20px" alt="[^^]"><img src="Decimal%20to%20Floating-Point%20Conversions_files/up3.gif" class="nb upimg" style="width: 10px; height: 20px" "="" alt="[^^]"></a>
+    <a href="http://sandbox.mc.edu/~bennet/cs110/index.html">Binary/Boolean Main Index</a></div>
+	 <img class="tibar tibarbot" src="Decimal%20to%20Floating-Point%20Conversions_files/bibar.gif" alt="------------------------------------------------------------------------------"><div class="dxtop">
+<span class="dxname">[<a class="dxtop" href="http://sandbox.mc.edu/~bennet/cs110/flt/dtof.html">Decimal to Floating-Point Conversions</a>]</span> <span class="dxname">[<a class="dxtop" href="http://sandbox.mc.edu/~bennet/cs110/flt/ftod.html">Float to Decimal Conversion</a>]</span> </div>
+
+
+
+<h2 class="sec">The Conversion Procedure</h2>
+
+The rules for converting a decimal number into floating point are
+as follows:
+<ol class="std" style="list-style-type: upper-alpha">
+<li> Convert the absolute value of the
+number to binary, perhaps with a fractional
+part after the binary point.  This can be done by converting the
+integral and fractional parts separately.  The integral part is converted
+with the techniques examined previously.  The fractional part
+can be converted by multiplication.  This is basically the inverse of
+the division method: we repeatedly multiply by 2, and harvest each
+one bit as it appears left of the decimal.
+</li><li> Append ×&nbsp;2<span class="sup">0</span> to the end of the binary number (which does not
+change its value).
+</li><li> Normalize the number.  Move the binary point so that it is one
+bit from the left.  Adjust the exponent of two so that the value does
+not change.
+</li><li> Place the mantissa into the mantissa field of the number.  Omit the
+leading one, and fill with zeros on the right.
+</li><li> Add the bias to the exponent of two, and place it in the
+exponent field.  The bias is 2<span class="sup"><i>k</i>−1</span>&nbsp;−&nbsp;1, where <i>k</i> is the
+number of bits in the exponent field.  For the eight-bit format, 
+<i>k</i>&nbsp;=&nbsp;3, so the bias is 2<span class="sup">3−1</span>&nbsp;−&nbsp;1&nbsp;=&nbsp;3.  For 
+IEEE 32-bit, <i>k</i>&nbsp;=&nbsp;8, so 
+the bias is 2<span class="sup">8−1</span>&nbsp;−&nbsp;1&nbsp;=&nbsp;127.
+</li><li> Set the sign bit, 1 for negative, 0 for positive, according to the
+sign of the original number.
+</li></ol>
+
+<h2 class="sec">Using The Conversion Procedure</h2>
+<ul class="std">
+
+
+
+
+
+
+<li> Convert 2.625 to our 8-bit floating point format.
+<ol class="std" style="list-style-type: upper-alpha">
+<li> The integral part is easy, 2<sub>10</sub> = 10<sub>2</sub>.  
+For the fractional part:
+<table class="dftobf">
+<tbody><tr class="fraccon">
+    <td class="old">0.625</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.25</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.25</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.5</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.5</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.0</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and nothing remains.</td>
+    </tr>
+</tbody></table>
+So 0.625<sub>10</sub> = 0.101<sub>2</sub>, and 2.625<sub>10</sub> = 10.101<sub>2</sub>.
+</li><li> Add an exponent part: 10.101<sub>2</sub> = 
+    10.101<sub>2</sub> × 2<sup>0</sup>.
+</li><li> Normalize: 10.101<sub>2</sub> × 2<sup>0</sup> =
+     1.0101<sub>2</sub> × 2<sup>1</sup>.
+</li><li> Mantissa: 0101
+</li><li> Exponent: 1 + 3 = 4 =
+     100<sub>2</sub>.
+</li><li> Sign bit is 0.
+</li></ol>
+The result is <span class="signbit">0</span><span class="expon">100</span><span class="mant">0101</span>. Represented as hex, that is 45<sub>16</sub>.
+
+
+
+
+</li><li> Convert -4.75 to our 8-bit floating point format.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li> The integral part is 4<sub>10</sub> = 100<sub>2</sub>.  The fractional:
+	<table class="dftobf">
+        <tbody><tr class="fraccon">
+    <td class="old">0.75</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.5</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.5</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.0</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and nothing remains.</td>
+    </tr>
+        </tbody></table>So 4.75<sub>10</sub> = 100.11<sub>2</sub>.
+     </li><li>Normalize: 100.11<sub>2</sub> = 
+        1.0011<sub>2</sub> × 2<sup>2</sup>.
+     </li><li>Mantissa is 0011, exponent is 
+            2 + 3
+     = 5 = 101<sub>2</sub>,
+	    sign bit is 1.
+     </li></ol>
+     So -4.75 is <span class="signbit">1</span><span class="expon">101</span><span class="mant">0011</span> = d3<sub>16</sub>
+
+</li><li> Convert 0.40625 to our 8-bit floating point format.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li> Converting:
+	<table class="dftobf">
+        <tbody><tr class="fraccon">
+    <td class="old">0.40625</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.8125</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.8125</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.625</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.625</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.25</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.25</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.5</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.5</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.0</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and nothing remains.</td>
+    </tr>
+        </tbody></table>So 0.40625<sub>10</sub> = 0.01101<sub>2</sub>.
+     </li><li>Normalize: 0.01101<sub>2</sub> = 
+        1.101<sub>2</sub> × 2<sup>-2</sup>.
+     </li><li>Mantissa is 1010, exponent is 
+            -2 + 3
+     = 1 = 001<sub>2</sub>,
+	    sign bit is 0.
+     </li></ol>
+     So 0.40625 is <span class="signbit">0</span><span class="expon">001</span><span class="mant">1010</span> = 1a<sub>16</sub>
+
+</li><li> Convert -12.0 to our 8-bit floating point format.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li> 12<sub>10</sub> = 1100<sub>2</sub>.
+	
+     </li><li>Normalize: 1100.0<sub>2</sub> = 
+        1.1<sub>2</sub> × 2<sup>3</sup>.
+     </li><li>Mantissa is 1000, exponent is 
+            3 + 3
+     = 6 = 110<sub>2</sub>,
+	    sign bit is 1.
+     </li></ol>
+     So -12.0 is <span class="signbit">1</span><span class="expon">110</span><span class="mant">1000</span> = e8<sub>16</sub>
+
+
+
+
+
+
+
+
+</li><li> Convert decimal 1.7 to our 8-bit floating point format.
+<ol class="std" style="list-style-type: lower-alpha">
+<li> The integral part is easy, 1<sub>10</sub> = 1<sub>2</sub>.  
+For the fractional part:
+<table class="dftobf">
+<tbody><tr class="fraccon">
+    <td class="old">0.7</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.4</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.4</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.8</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.8</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.6</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.6</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.2</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.2</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.4</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.4</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.8</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.8</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.6</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.6</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.2</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr>
+<tr><td class="etc" colspan="4">…</td></tr>
+</tbody></table>
+The reason why the process seems to continue endlessly is that it does.
+The number 7/10, which makes a perfectly reasonable decimal fraction, is a
+repeating fraction in binary, just as the faction 1/3 is a repeating
+fraction in decimal.  (It repeats in binary as well.)  We cannot represent
+this exactly as a floating point number.
+The closest we can come in four bits is .1011.
+Since we already have a leading 1, the best eight-bit number we 
+can make is 1.1011.
+</li><li>Already normalized: 1.1011<sub>2</sub> = 1.1011<sub>2</sub> × 2<sup>0</sup>.
+</li><li>Mantissa is 1011, exponent is 
+0 + 3 = 3 =
+011<sub>2</sub>,
+sign bit is 0.
+</li></ol>
+The result is <span class="signbit">0</span><span class="expon">011</span><span class="mant">1011</span> = 3b<sub>16</sub>.
+This is not exact, of course.
+If you convert it back to
+decimal, you get 1.6875.
+
+</li><li> Convert -1313.3125 to IEEE 32-bit floating point format.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li> The integral part is 1313<sub>10</sub> = 10100100001<sub>2</sub>.  The fractional:
+	<table class="dftobf">
+        <tbody><tr class="fraccon">
+    <td class="old">0.3125</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.625</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.625</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.25</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.25</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.5</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.5</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.0</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and nothing remains.</td>
+    </tr>
+        </tbody></table>So 1313.3125<sub>10</sub> = 10100100001.0101<sub>2</sub>.
+     </li><li>Normalize: 10100100001.0101<sub>2</sub> = 
+        1.01001000010101<sub>2</sub> × 2<sup>10</sup>.
+     </li><li>Mantissa is 01001000010101000000000, exponent is 
+            10 + 127
+     = 137 = 10001001<sub>2</sub>,
+	    sign bit is 1.
+     </li></ol>
+     So -1313.3125 is <span class="signbit">1</span><span class="expon">10001001</span><span class="mant">01001000010101000000000</span> = c4a42a00<sub>16</sub>
+
+</li><li> Convert 0.1015625 to IEEE 32-bit floating point format.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li> Converting:
+	<table class="dftobf">
+        <tbody><tr class="fraccon">
+    <td class="old">0.1015625</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.203125</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.203125</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.40625</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.40625</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.8125</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.8125</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.625</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.625</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.25</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.25</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.5</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.5</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.0</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and nothing remains.</td>
+    </tr>
+        </tbody></table>So 0.1015625<sub>10</sub> = 0.0001101<sub>2</sub>.
+     </li><li>Normalize: 0.0001101<sub>2</sub> = 
+        1.101<sub>2</sub> × 2<sup>-4</sup>.
+     </li><li>Mantissa is 10100000000000000000000, exponent is 
+            -4 + 127
+     = 123 = 01111011<sub>2</sub>,
+	    sign bit is 0.
+     </li></ol>
+     So 0.1015625 is <span class="signbit">0</span><span class="expon">01111011</span><span class="mant">10100000000000000000000</span> = 3dd00000<sub>16</sub>
+
+</li><li> Convert 39887.5625 to IEEE 32-bit floating point format.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li> The integral part is 39887<sub>10</sub> = 1001101111001111<sub>2</sub>.  The fractional:
+	<table class="dftobf">
+        <tbody><tr class="fraccon">
+    <td class="old">0.5625</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.125</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and continue with the rest.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.125</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.25</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.25</td>
+    <td class="times">× 2 =</td>
+    <td class="new">0.5</td>
+    <td class="digit">0</td>
+    <td class="next">Generate 0 and continue.</td>
+    </tr><tr class="fraccon">
+    <td class="old">0.5</td>
+    <td class="times">× 2 =</td>
+    <td class="new">1.0</td>
+    <td class="digit">1</td>
+    <td class="next">Generate 1 and nothing remains.</td>
+    </tr>
+        </tbody></table>So 39887.5625<sub>10</sub> = 1001101111001111.1001<sub>2</sub>.
+     </li><li>Normalize: 1001101111001111.1001<sub>2</sub> = 
+        1.0011011110011111001<sub>2</sub> × 2<sup>15</sup>.
+     </li><li>Mantissa is 00110111100111110010000, exponent is 
+            15 + 127
+     = 142 = 10001110<sub>2</sub>,
+	    sign bit is 0.
+     </li></ol>
+     So 39887.5625 is <span class="signbit">0</span><span class="expon">10001110</span><span class="mant">00110111100111110010000</span> = 471bcf90<sub>16</sub>
+
+
+</li></ul>
+
+
+
+</body></html>

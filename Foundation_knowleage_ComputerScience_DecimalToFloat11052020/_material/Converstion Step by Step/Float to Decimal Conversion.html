@@ -1,0 +1,465 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	 <link rel="stylesheet" href="Float%20to%20Decimal%20Conversion_files/twb.css" type="text/css">
+<link rel="stylesheet" href="Float%20to%20Decimal%20Conversion_files/gencon.css" type="text/css">
+<link rel="stylesheet" href="Float%20to%20Decimal%20Conversion_files/flt.css" type="text/css">
+<link rel="stylesheet" href="Float%20to%20Decimal%20Conversion_files/dxtop.css" type="text/css">
+<link rel="stylesheet" href="Float%20to%20Decimal%20Conversion_files/matutil.css" type="text/css">
+
+	 
+	 	 
+	 <title>Float to Decimal Conversion</title>
+	 
+	 	 </head>
+	 <body>
+	 <img class="tibar" src="Float%20to%20Decimal%20Conversion_files/bibart.gif" alt="------------------------------------------------------------------------------"><br>
+	 <a href="http://www.mc.edu/"><img src="Float%20to%20Decimal%20Conversion_files/msplash3.gif" class="nb right" alt="MC logo"></a>
+	 <div class="intit">Float to Decimal Conversion</div>
+	 <div class="uplnk"><a href="http://sandbox.mc.edu/~bennet/cs110/flt/index.html"><img src="Float%20to%20Decimal%20Conversion_files/up3.gif" class="nb upimg" alt="[^]"></a>
+		<a href="http://sandbox.mc.edu/~bennet/cs110/flt/index.html">Floating-Point Conversion Examples</a> &nbsp; <a href="http://sandbox.mc.edu/~bennet/cs110/index.html"><img src="Float%20to%20Decimal%20Conversion_files/up3.gif" class="nb upimg" style="width: 10px; height: 20px" alt="[^^]"><img src="Float%20to%20Decimal%20Conversion_files/up3.gif" class="nb upimg" style="width: 10px; height: 20px" "="" alt="[^^]"></a>
+    <a href="http://sandbox.mc.edu/~bennet/cs110/index.html">Binary/Boolean Main Index</a></div>
+	 <img class="tibar tibarbot" src="Float%20to%20Decimal%20Conversion_files/bibar.gif" alt="------------------------------------------------------------------------------"><div class="dxtop">
+<span class="dxname">[<a class="dxtop" href="http://sandbox.mc.edu/~bennet/cs110/flt/dtof.html">Decimal to Floating-Point Conversions</a>]</span> <span class="dxname">[<a class="dxtop" href="http://sandbox.mc.edu/~bennet/cs110/flt/ftod.html">Float to Decimal Conversion</a>]</span> </div>
+
+
+
+<h2 class="sec">The Conversion Procedure</h2>
+
+The rules for converting a floating point number into decimal are
+simply to reverse of the decimal to floating point conversion:
+<ol class="std" style="list-style-type: upper-alpha">
+<li> If the original number is in hex, convert it to binary.
+</li><li> Separate into the sign, exponent, and mantissa fields.
+</li><li> Extract the mantissa from the mantissa field, and restore the
+leading one.  You may also omit the trailing zeros.
+</li><li> Extract the exponent from the exponent field, and
+subtract the bias to recover the actual exponent of two.
+As before, the bias is 2<span class="sup"><i>k</i>−1</span>&nbsp;−&nbsp;1, where <i>k</i> is the
+number of bits in the exponent field, giving 3 for the 8-bit format
+and 127 for the 32-bit.
+</li><li> De-normalize the number: move the binary point so the exponent is
+0, and the value of the number remains unchanged.
+</li><li> Convert the binary value 
+to decimal.  This is done just as with binary integers, but the place
+values right of the binary point are fractions.
+</li><li> Set the sign of the decimal number according to the sign bit
+of the original floating point number:
+make it negative for 1; leave positive for 0.
+</li></ol>
+<p>
+If the binary exponent is very large or small, you can convert the 
+mantissa directly to decimal without de-normalizing.  Then use a calculator to
+raise two to the exponent, and perform
+the multiplication.  This will give an approximate answer, but is
+sufficient in most cases.
+
+</p><h2 class="sec">Examples Using The Conversion Procedure</h2>
+
+<ul class="std">
+
+
+
+
+
+
+
+<li>Convert the 8-bit floating point number e7 (in hex) to decimal.
+<ol class="std" style="list-style-type: upper-alpha">
+<li>Convert: e7<sub>16</sub> = 11100111<sub>2</sub>.
+</li><li>Seprate: <span class="signbit">1</span><span class="expon">110</span><span class="mant">0111</span>
+</li><li>Mantissa: 1.0111
+</li><li>Exponent: 110<sub>2</sub> = 6<sub>10</sub>; 6 − 3 = 3.
+</li><li>De-normalize: 1.0111<sub>2</sub> × 2<sup>3</sup> =
+    1011.1
+</li><li>Convert:<table class="flcon">
+    <tbody><tr class="btr"><td class="bid">Exponents</td>
+     	 <td class="ta">2<sup>3</sup></td><td></td><td class="ta">2<sup>2</sup></td><td></td><td class="ta">2<sup>1</sup></td><td></td><td class="ta">2<sup>0</sup></td>
+	 <td></td>
+	 <td class="tr">2<sup>-1</sup></td>
+    </tr>
+     <tr class="btr"><td class="bid">Place Values</td>
+     	 <td class="ta">8</td><td></td><td class="ta">4</td><td></td><td class="ta">2</td><td></td><td class="ta">1</td>
+	 <td></td>
+	 <td class="tr">0.5</td>
+    </tr>
+     <tr class="btr"><td class="bid">Bits</td>
+     	 <td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">1</td>
+	 <td class="binpt">.</td>
+     	 <td class="tb">1</td></tr>
+     <tr class="btr"><td class="bid">Value</td>
+     	 <td class="al">8</td>
+    <td class="apl">&nbsp;</td>
+     <td class="anu">&nbsp;</td>
+     <td class="apl">+</td>
+     <td class="anu">2</td>
+     <td class="apl">+</td>
+     <td class="anu">1</td>
+     
+	 <td class="apl">+</td>
+     <td class="anu">0.5</td>
+     
+	 <td class="apl">=</td>
+	 <td class="btot">11.5</td></tr>
+    </tbody></table>
+</li><li>Sign: negative.
+</li></ol>
+Result: e7 is -11.5
+
+
+
+</li><li>Convert the 8-bit floating point number 26 (in hex) 
+    		to decimal.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li>Convert and separate: 26<sub>16</sub> = 
+     		<span class="signbit">0</span><span class="expon">010</span><span class="mant">0110</span> <sub>2</sub>
+     </li><li>Exponent: 010<sub>2</sub> = 2<sub>10</sub>;
+		2 − 3 = -1.
+     </li><li>Denormalize: 1.011<sub>2</sub> × 2<sup>-1</sup> =
+		0.1011.
+     </li><li>Convert:<table class="flcon">
+    		<tbody><tr class="btr"><td class="bid">Exponents</td>
+     	 <td class="ta">2<sup>0</sup></td>
+	 <td></td>
+	 <td class="tr">2<sup>-1</sup></td>
+    <td></td><td class="tr">2<sup>-2</sup></td>
+    <td></td><td class="tr">2<sup>-3</sup></td>
+    <td></td><td class="tr">2<sup>-4</sup></td>
+    </tr>
+     <tr class="btr"><td class="bid">Place Values</td>
+     	 <td class="ta">1</td>
+	 <td></td>
+	 <td class="tr">0.5</td>
+    <td></td><td class="tr">0.25</td>
+    <td></td><td class="tr">0.125</td>
+    <td></td><td class="tr">0.0625</td>
+    </tr>
+     <tr class="btr"><td class="bid">Bits</td>
+     	 <td class="tb">0</td>
+	 <td class="binpt">.</td>
+     	 <td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">1</td></tr>
+     <tr class="btr"><td class="bid">Value</td>
+     	 <td class="al"></td>
+    
+	 <td class="apl"></td>
+     <td class="anu">0.5</td>
+     <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl">+</td>
+     <td class="anu">0.125</td>
+     <td class="apl">+</td>
+     <td class="anu">0.0625</td>
+     
+	 <td class="apl">=</td>
+	 <td class="btot">0.6875</td></tr>
+    	 </tbody></table>
+     </li><li>Sign: positive
+     </li></ol>
+     Result: 26 is 0.6875.
+</li><li>Convert the 8-bit floating point number d3 (in hex) 
+    		to decimal.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li>Convert and separate: d3<sub>16</sub> = 
+     		<span class="signbit">1</span><span class="expon">101</span><span class="mant">0011</span> <sub>2</sub>
+     </li><li>Exponent: 101<sub>2</sub> = 5<sub>10</sub>;
+		5 − 3 = 2.
+     </li><li>Denormalize: 1.0011<sub>2</sub> × 2<sup>2</sup> =
+		100.11.
+     </li><li>Convert:<table class="flcon">
+    		<tbody><tr class="btr"><td class="bid">Exponents</td>
+     	 <td class="ta">2<sup>2</sup></td><td></td><td class="ta">2<sup>1</sup></td><td></td><td class="ta">2<sup>0</sup></td>
+	 <td></td>
+	 <td class="tr">2<sup>-1</sup></td>
+    <td></td><td class="tr">2<sup>-2</sup></td>
+    </tr>
+     <tr class="btr"><td class="bid">Place Values</td>
+     	 <td class="ta">4</td><td></td><td class="ta">2</td><td></td><td class="ta">1</td>
+	 <td></td>
+	 <td class="tr">0.5</td>
+    <td></td><td class="tr">0.25</td>
+    </tr>
+     <tr class="btr"><td class="bid">Bits</td>
+     	 <td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">0</td>
+	 <td class="binpt">.</td>
+     	 <td class="tb">1</td><td></td><td class="tb">1</td></tr>
+     <tr class="btr"><td class="bid">Value</td>
+     	 <td class="al">4</td>
+    <td class="apl">&nbsp;</td>
+     <td class="anu">&nbsp;</td>
+     <td class="apl">&nbsp;</td>
+     <td class="anu">&nbsp;</td>
+     
+	 <td class="apl">+</td>
+     <td class="anu">0.5</td>
+     <td class="apl">+</td>
+     <td class="anu">0.25</td>
+     
+	 <td class="apl">=</td>
+	 <td class="btot">4.75</td></tr>
+    	 </tbody></table>
+     </li><li>Sign: negative
+     </li></ol>
+     Result: d3 is -4.75.
+</li><li>Convert the 32-bit floating point number 44361000 (in hex) 
+    		to decimal.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li>Convert and separate: 44361000<sub>16</sub> = 
+     		<span class="signbit">0</span><span class="expon">10001000</span><span class="mant">01101100001000000000000</span> <sub>2</sub>
+     </li><li>Exponent: 10001000<sub>2</sub> = 136<sub>10</sub>;
+		136 − 127 = 9.
+     </li><li>Denormalize: 1.01101100001<sub>2</sub> × 2<sup>9</sup> =
+		1011011000.01.
+     </li><li>Convert:<table class="flcon">
+    		<tbody><tr class="btr"><td class="bid">Exponents</td>
+     	 <td class="ta">2<sup>9</sup></td><td></td><td class="ta">2<sup>8</sup></td><td></td><td class="ta">2<sup>7</sup></td><td></td><td class="ta">2<sup>6</sup></td><td></td><td class="ta">2<sup>5</sup></td><td></td><td class="ta">2<sup>4</sup></td><td></td><td class="ta">2<sup>3</sup></td><td></td><td class="ta">2<sup>2</sup></td><td></td><td class="ta">2<sup>1</sup></td><td></td><td class="ta">2<sup>0</sup></td>
+	 <td></td>
+	 <td class="tr">2<sup>-1</sup></td>
+    <td></td><td class="tr">2<sup>-2</sup></td>
+    </tr>
+     <tr class="btr"><td class="bid">Place Values</td>
+     	 <td class="ta">512</td><td></td><td class="ta">256</td><td></td><td class="ta">128</td><td></td><td class="ta">64</td><td></td><td class="ta">32</td><td></td><td class="ta">16</td><td></td><td class="ta">8</td><td></td><td class="ta">4</td><td></td><td class="ta">2</td><td></td><td class="ta">1</td>
+	 <td></td>
+	 <td class="tr">0.5</td>
+    <td></td><td class="tr">0.25</td>
+    </tr>
+     <tr class="btr"><td class="bid">Bits</td>
+     	 <td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">0</td><td></td><td class="tb">0</td>
+	 <td class="binpt">.</td>
+     	 <td class="tb">0</td><td></td><td class="tb">1</td></tr>
+     <tr class="btr"><td class="bid">Value</td>
+     	 <td class="al">512</td>
+    <td class="apl">&nbsp;</td>
+     <td class="anu">&nbsp;</td>
+     <td class="apl">+</td>
+     <td class="anu">128</td>
+     <td class="apl">+</td>
+     <td class="anu">64</td>
+     <td class="apl">&nbsp;</td>
+     <td class="anu">&nbsp;</td>
+     <td class="apl">+</td>
+     <td class="anu">16</td>
+     <td class="apl">+</td>
+     <td class="anu">8</td>
+     <td class="apl">&nbsp;</td>
+     <td class="anu">&nbsp;</td>
+     <td class="apl">&nbsp;</td>
+     <td class="anu">&nbsp;</td>
+     <td class="apl">&nbsp;</td>
+     <td class="anu">&nbsp;</td>
+     
+	 <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl">+</td>
+     <td class="anu">0.25</td>
+     
+	 <td class="apl">=</td>
+	 <td class="btot">728.25</td></tr>
+    	 </tbody></table>
+     </li><li>Sign: positive
+     </li></ol>
+     Result: 44361000 is 728.25.
+</li><li>Convert the 32-bit floating point number be580000 (in hex) 
+    		to decimal.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li>Convert and separate: be580000<sub>16</sub> = 
+     		<span class="signbit">1</span><span class="expon">01111100</span><span class="mant">10110000000000000000000</span> <sub>2</sub>
+     </li><li>Exponent: 01111100<sub>2</sub> = 124<sub>10</sub>;
+		124 − 127 = -3.
+     </li><li>Denormalize: 1.1011<sub>2</sub> × 2<sup>-3</sup> =
+		0.0011011.
+     </li><li>Convert:<table class="flcon">
+    		<tbody><tr class="btr"><td class="bid">Exponents</td>
+     	 <td class="ta">2<sup>0</sup></td>
+	 <td></td>
+	 <td class="tr">2<sup>-1</sup></td>
+    <td></td><td class="tr">2<sup>-2</sup></td>
+    <td></td><td class="tr">2<sup>-3</sup></td>
+    <td></td><td class="tr">2<sup>-4</sup></td>
+    <td></td><td class="tr">2<sup>-5</sup></td>
+    <td></td><td class="tr">2<sup>-6</sup></td>
+    <td></td><td class="tr">2<sup>-7</sup></td>
+    </tr>
+     <tr class="btr"><td class="bid">Place Values</td>
+     	 <td class="ta">1</td>
+	 <td></td>
+	 <td class="tr">0.5</td>
+    <td></td><td class="tr">0.25</td>
+    <td></td><td class="tr">0.125</td>
+    <td></td><td class="tr">0.0625</td>
+    <td></td><td class="tr">0.03125</td>
+    <td></td><td class="tr">0.015625</td>
+    <td></td><td class="tr">0.0078125</td>
+    </tr>
+     <tr class="btr"><td class="bid">Bits</td>
+     	 <td class="tb">0</td>
+	 <td class="binpt">.</td>
+     	 <td class="tb">0</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">1</td></tr>
+     <tr class="btr"><td class="bid">Value</td>
+     	 <td class="al"></td>
+    
+	 <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl"></td>
+     <td class="anu">0.125</td>
+     <td class="apl">+</td>
+     <td class="anu">0.0625</td>
+     <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl">+</td>
+     <td class="anu">0.015625</td>
+     <td class="apl">+</td>
+     <td class="anu">0.0078125</td>
+     
+	 <td class="apl">=</td>
+	 <td class="btot">0.2109375</td></tr>
+    	 </tbody></table>
+     </li><li>Sign: negative
+     </li></ol>
+     Result: be580000 is -0.2109375.
+</li><li>Convert the 32-bit floating point number a3358000 (in hex) 
+    		to decimal.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li>Convert and separate: a3358000<sub>16</sub> = 
+     		<span class="signbit">1</span><span class="expon">01000110</span><span class="mant">01101011000000000000000</span> <sub>2</sub>
+     </li><li>Exponent: 01000110<sub>2</sub> = 70<sub>10</sub>;
+		70 − 127 = -57.
+     </li><li>Since the exponent is far from zero, 
+     	       convert the original (normalized) mantissa:
+         <table class="flcon">
+    		<tbody><tr class="btr"><td class="bid">Exponents</td>
+     	 <td class="ta">2<sup>0</sup></td>
+	 <td></td>
+	 <td class="tr">2<sup>-1</sup></td>
+    <td></td><td class="tr">2<sup>-2</sup></td>
+    <td></td><td class="tr">2<sup>-3</sup></td>
+    <td></td><td class="tr">2<sup>-4</sup></td>
+    <td></td><td class="tr">2<sup>-5</sup></td>
+    <td></td><td class="tr">2<sup>-6</sup></td>
+    <td></td><td class="tr">2<sup>-7</sup></td>
+    <td></td><td class="tr">2<sup>-8</sup></td>
+    </tr>
+     <tr class="btr"><td class="bid">Place Values</td>
+     	 <td class="ta">1</td>
+	 <td></td>
+	 <td class="tr">0.5</td>
+    <td></td><td class="tr">0.25</td>
+    <td></td><td class="tr">0.125</td>
+    <td></td><td class="tr">0.0625</td>
+    <td></td><td class="tr">0.03125</td>
+    <td></td><td class="tr">0.015625</td>
+    <td></td><td class="tr">0.0078125</td>
+    <td></td><td class="tr">0.00390625</td>
+    </tr>
+     <tr class="btr"><td class="bid">Bits</td>
+     	 <td class="tb">1</td>
+	 <td class="binpt">.</td>
+     	 <td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">1</td></tr>
+     <tr class="btr"><td class="bid">Value</td>
+     	 <td class="al">1</td>
+    
+	 <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl">+</td>
+     <td class="anu">0.25</td>
+     <td class="apl">+</td>
+     <td class="anu">0.125</td>
+     <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl">+</td>
+     <td class="anu">0.03125</td>
+     <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl">+</td>
+     <td class="anu">0.0078125</td>
+     <td class="apl">+</td>
+     <td class="anu">0.00390625</td>
+     
+	 <td class="apl">=</td>
+	 <td class="btot">1.41796875</td></tr>
+    	 </tbody></table>
+     
+     
+     
+     </li><li>Use calculator to find 1.41796875 
+     	     × 2<sup>-57</sup>.  You should get 
+	     something like 9.83913471531 × 10<sup>-18</sup>
+.
+     </li><li>Sign: negative
+     </li></ol>
+     Result: a3358000 is about -9.83913471531 × 10<sup>-18</sup>
+.
+</li><li>Convert the 32-bit floating point number 76650000 (in hex) 
+    		to decimal.
+     <ol class="std" style="list-style-type: lower-alpha">
+     <li>Convert and separate: 76650000<sub>16</sub> = 
+     		<span class="signbit">0</span><span class="expon">11101100</span><span class="mant">11001010000000000000000</span> <sub>2</sub>
+     </li><li>Exponent: 11101100<sub>2</sub> = 236<sub>10</sub>;
+		236 − 127 = 109.
+     </li><li>Since the exponent is far from zero, 
+     	       convert the original (normalized) mantissa:
+         <table class="flcon">
+    		<tbody><tr class="btr"><td class="bid">Exponents</td>
+     	 <td class="ta">2<sup>0</sup></td>
+	 <td></td>
+	 <td class="tr">2<sup>-1</sup></td>
+    <td></td><td class="tr">2<sup>-2</sup></td>
+    <td></td><td class="tr">2<sup>-3</sup></td>
+    <td></td><td class="tr">2<sup>-4</sup></td>
+    <td></td><td class="tr">2<sup>-5</sup></td>
+    <td></td><td class="tr">2<sup>-6</sup></td>
+    <td></td><td class="tr">2<sup>-7</sup></td>
+    </tr>
+     <tr class="btr"><td class="bid">Place Values</td>
+     	 <td class="ta">1</td>
+	 <td></td>
+	 <td class="tr">0.5</td>
+    <td></td><td class="tr">0.25</td>
+    <td></td><td class="tr">0.125</td>
+    <td></td><td class="tr">0.0625</td>
+    <td></td><td class="tr">0.03125</td>
+    <td></td><td class="tr">0.015625</td>
+    <td></td><td class="tr">0.0078125</td>
+    </tr>
+     <tr class="btr"><td class="bid">Bits</td>
+     	 <td class="tb">1</td>
+	 <td class="binpt">.</td>
+     	 <td class="tb">1</td><td></td><td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td><td></td><td class="tb">0</td><td></td><td class="tb">1</td></tr>
+     <tr class="btr"><td class="bid">Value</td>
+     	 <td class="al">1</td>
+    
+	 <td class="apl">+</td>
+     <td class="anu">0.5</td>
+     <td class="apl">+</td>
+     <td class="anu">0.25</td>
+     <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl">+</td>
+     <td class="anu">0.03125</td>
+     <td class="apl"></td>
+     <td class="anu"></td>
+     <td class="apl">+</td>
+     <td class="anu">0.0078125</td>
+     
+	 <td class="apl">=</td>
+	 <td class="btot">1.7890625</td></tr>
+    	 </tbody></table>
+     
+     
+     
+     </li><li>Use calculator to find 1.7890625 
+     	     × 2<sup>109</sup>.  You should get 
+	     something like 1.16116794981 × 10<sup>33</sup>
+.
+     </li><li>Sign: positive
+     </li></ol>
+     Result: 76650000 is about 1.16116794981 × 10<sup>33</sup>
+.
+
+
+
+
+
+</li></ul></body></html>
